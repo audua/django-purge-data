@@ -12,7 +12,14 @@ You can also use the command-line tool to purge data.
 Installation
 ------------
 For Celery and RabbitMQ, see the installation documentation in the **docs** directory.
-To use purgedata, you must make the purgedata package available on your python path. Drop the purgedata app into your project directory
+To use purgedata, you must make the purgedata package available on your python path. Drop the purgedata app into your project directory and 
+add **purgedata** and **django_celery_results** to your INSTALLED_APPS setting like this::
+
+		INSTALLED_APPS = [
+			...
+			'purgedata',
+			'django_celery_results',
+		]
 
 
 Management command
@@ -53,7 +60,7 @@ If instead of hard coding ``60.0`` seconds you wanted to use crontab to purge da
 you need to set an environment variable and define the crontab values there. 
 For example, you can define an environment variable like this::
 
-	`PURGE_MYMODEL_DATA_SCHEDULE = '0 6,18'` for ``6:00 am`` and ``6:00 pm`` and then add the schedule thusly:
+	`PURGE_MYMODEL_DATA_SCHEDULE = '0 6,18'` for 6:00 am and 6:00 pm and then add the schedule thus:
 	`add_schedule('purge-mymodel-data', 'purgedata.tasks.purge_data', 'PURGE_MYMODEL_DATA_SCHEDULE', ('purgedata.mymodel', '--filter=created_date__lte=180'))`
 
 

@@ -39,10 +39,9 @@ def add_schedule(name, task, env_var, args=None):
     if not ct:
         return
     if not isinstance(ct, crontab):
-        if ct.replace('.', '', 1).isdigit():
-            ct = float(ct)
-        else:
+        if not ct.replace('.', '', 1).isdigit():
             return
+        ct = float(ct)
     beat_schedule[name] = {
         'task': task,
         'schedule': ct,
@@ -51,5 +50,5 @@ def add_schedule(name, task, env_var, args=None):
 
 
 #  add_schedule('purge-mymodel-data', 'purgedata.tasks.purge_data', 'PURGE_MYMODEL_DATA_SCHEDULE', ('purgedata.mymodel', '--filter=created_date__lte=180'))
-add_schedule('purge-sample-data', 'purgedata.tasks.purge_data', '3600.0', ('purgedata.sample', '--filter=modified_date__lte=1'))
+#  add_schedule('purge-sample-data', 'purgedata.tasks.purge_data', '3600.0', ('purgedata.sample', '--filter=modified_date__lte=1'))
 

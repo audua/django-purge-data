@@ -43,7 +43,6 @@ class Command(BaseCommand):
             filters = ' '.join(options['filter'])
             filters = re.split(r'[, ]\s*(?=[^]]*(?:\[|$))', filters)  # splits commas and spaces not in lists
             filters = dict(item.split("=") for item in filters)
-            is_bool = True
 
             truth_values = ['y', 'yes', 't', 'true', 'on', '1', 'n', 'no', 'f', 'false', 'off', '0']
 
@@ -52,6 +51,7 @@ class Command(BaseCommand):
                 field_ = model._meta.get_field(field_parts[0])  # pylint: disable=protected-access
                 field_type = field_.get_internal_type()
                 field_types = ['DateField', 'DateTimeField']
+				is_bool = True
                 if len(field_parts) > 1 and field_type in field_types and val.isdigit():
                     if set(field_.class_lookups.keys()).isdisjoint(set(field_parts[1:])):
                         time = timezone.now() - timezone.timedelta(days=int(val))
